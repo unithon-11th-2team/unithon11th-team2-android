@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.team2.unithon11th_team2_android.ui.theme.Unithon11thteam2androidTheme
+import com.team2.unithon11th_team2_android.common.ui.theme.Unithon11thteam2androidTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.team2.unithon11th_team2_android.ui.theme
+package com.team2.unithon11th_team2_android.common.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
