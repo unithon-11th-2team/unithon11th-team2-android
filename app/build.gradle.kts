@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.team2.unithon11th_team2_android"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.team2.unithon11th_team2_android"
         minSdk = 31
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
