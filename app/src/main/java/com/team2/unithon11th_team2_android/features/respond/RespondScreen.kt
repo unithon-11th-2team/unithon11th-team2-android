@@ -1,5 +1,7 @@
 package com.team2.unithon11th_team2_android.features.respond
 
+import android.media.MediaPlayer
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,16 +25,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
 import com.team2.domain.entity.ItemType
 import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.component.DefaultButtonWithIcon
@@ -43,6 +54,13 @@ internal fun RespondScreen(
     respondViewModel: RespondViewModel = hiltViewModel()
 ) {
     val state by respondViewModel.uiState.collectAsState()
+    var isPlay by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(state.clicked){
+        if(state.clicked){
+            isPlay = true
+        }
+    }
     Scaffold(
         containerColor = OurTheme.color.gray,
         topBar = { RespondTopBar(state.userName) }
@@ -58,10 +76,17 @@ internal fun RespondScreen(
                 date = state.date,
                 address = state.address,
                 message = state.message,
-                count = state.count
+                count = state.count,
+                clicked = state.clicked,
+                onClickItem = {
+                    respondViewModel.setEvent(RespondUiEvent.OnClickItem)
+                }
             )
-            CommentContent()
-            InputCommentContent()
+            if(isPlay){
+                AnimateItemScreen{ isPlay = !isPlay }
+            }
+//            CommentContent()
+//            InputCommentContent()
         }
     }
 }
@@ -101,7 +126,9 @@ internal fun ItemDetailContent(
     date: String,
     address: String,
     message: String,
-    count: Int
+    count: Int,
+    clicked: Boolean,
+    onClickItem: () -> Unit
 ) {
     val resId = when(type){
         ItemType.TYPE1 -> R.drawable.object_type1
@@ -157,11 +184,9 @@ internal fun ItemDetailContent(
 
         DefaultButtonWithIcon(
             text = count.toString(),
-            containerColor = OurTheme.color.black,
-            contentColor = Color.White
-        ) {
-
-        }
+            containerColor = if(clicked) OurTheme.color.primary else OurTheme.color.black,
+            contentColor = if(clicked) Color.Black else Color.White
+        ) { onClickItem() }
     }
 }
 
@@ -183,4 +208,34 @@ internal fun CommentItem(){
 @Composable
 internal fun InputCommentContent() {
 
+}
+
+@Composable
+fun AnimateItemScreen(onFinish: () -> Unit){
+    val context = LocalContext.current
+    val mediaPlayer = MediaPlayer.create(context, R.raw.item_play)
+    LaunchedEffect(true){
+        mediaPlayer.start()
+        mediaPlayer.setOnCompletionListener { onFinish() }
+    }
+    GifImage()
+}
+
+@Composable
+fun GifImage(
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .components { add(ImageDecoderDecoder.Factory()) }
+        .build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(context).data(data = R.drawable.animate_item).apply(block = {
+                size(1000)
+            }).build(), imageLoader = imageLoader
+        ),
+        contentDescription = null,
+        modifier = modifier.fillMaxWidth(),
+    )
 }

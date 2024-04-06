@@ -34,6 +34,16 @@ internal class RespondViewModel @Inject constructor(
             is RespondUiEvent.FetchDetailData -> {
                 fetchItemDetail()
             }
+
+            is RespondUiEvent.OnClickItem ->{
+                val diff = if(currentState.clicked) -1 else +1
+                setState(
+                    currentState.copy(
+                        clicked = !currentState.clicked,
+                        count = currentState.count.plus(diff)
+                    )
+                )
+            }
         }
     }
 
@@ -68,9 +78,11 @@ data class RespondUiState(
     val address: String = "",
     val message: String = "",
     val count: Int = 0,
+    val clicked: Boolean = false
     // TODO add comment
 ): UiState
 sealed class RespondUiEvent: UiEvent{
     object FetchDetailData: RespondUiEvent()
+    object OnClickItem: RespondUiEvent()
 }
 sealed class RespondUiEffect: UiEffect{ }

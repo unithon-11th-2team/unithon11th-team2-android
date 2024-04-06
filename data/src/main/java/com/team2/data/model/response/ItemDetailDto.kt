@@ -3,7 +3,6 @@ package com.team2.data.model.response
 import com.team2.domain.entity.Item
 import com.team2.domain.entity.ItemType
 import kotlinx.serialization.Serializable
-import java.text.SimpleDateFormat
 
 @Serializable
 data class ItemDetailDto(
