@@ -57,70 +57,62 @@ internal fun LoginScreen(
 
         else -> {}
     }
-    Column {
-        AppBarWithBackNavigation(
-            modifier = Modifier.fillMaxWidth().background(OurColorPalette.current.background),
-            isBackIconVisible = true,
-            appbarColor = OurColorPalette.current.white,
-            onBackButtonAction = {
-            }
-        )
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp)
+            .padding(vertical = 56.dp)
+    ) {
+
+       Image(
+           painter = painterResource(R.drawable.profile_title_img), contentDescription = null)
+        Spacer(modifier = Modifier.padding(20.dp))
+        BasicTextField(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-        ) {
-
-           Image(
-               painter = painterResource(R.drawable.profile_title_img), contentDescription = null,
-               alignment = Alignment.Center)
-            Spacer(modifier = Modifier.padding(20.dp))
-            BasicTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .background(Color.White)
-                    .padding()
-                    .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(4.dp))
-                    .padding(horizontal = 4.dp, vertical = 4.dp),
-                singleLine = true,
-                decorationBox = { innerTextField ->
-                    if (nickname.isEmpty()) {
-                        Text(
-                            text = stringResource(id = R.string.login_explain),
-                            style = OurTypo.current.Body01.copy(color = OurColorPalette.current.lightGray)
-                        )
-                    }
-                    innerTextField()
-
-                },
-                value = nickname,
-                onValueChange = {
-                    Timber.e("#### ${it}")
-
-                    loginViewModel.setEvent(
-                        LoginUiEvent.OnFetchNickname(it)
+                .fillMaxWidth()
+                .height(48.dp)
+                .background(Color.White)
+                .padding()
+                .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(4.dp))
+                .padding(horizontal = 4.dp, vertical = 4.dp),
+            singleLine = true,
+            decorationBox = { innerTextField ->
+                if (nickname.isEmpty()) {
+                    Text(
+                        text = stringResource(id = R.string.login_explain),
+                        style = OurTypo.current.Body01.copy(color = OurColorPalette.current.lightGray)
                     )
                 }
-            )
+                innerTextField()
 
-            Text(
-                text = stringResource(R.string.login_hint_explain),
-                style = OurTypo.current.Caption,
-                modifier = Modifier
-            )
-            Spacer(modifier = Modifier.padding(6.dp))
-            MainButton(
-                title = "다음",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                onClickAction = {
-                    loginViewModel.setEvent(
-                        LoginUiEvent.OnClickLoginButton
-                    )
-                })
-        }
+            },
+            value = nickname,
+            onValueChange = {
+                Timber.e("#### ${it}")
+
+                loginViewModel.setEvent(
+                    LoginUiEvent.OnFetchNickname(it)
+                )
+            }
+        )
+
+        Text(
+            text = stringResource(R.string.login_hint_explain),
+            style = OurTypo.current.Caption,
+            modifier = Modifier
+        )
+        Spacer(modifier = Modifier.padding(6.dp))
+        MainButton(
+            title = "다음",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            onClickAction = {
+                loginViewModel.setEvent(
+                    LoginUiEvent.OnClickLoginButton
+                )
+            })
     }
+
 
 }
