@@ -9,7 +9,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -37,8 +39,10 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+val LocalOurColor = staticCompositionLocalOf { OurColorScheme() }
+
 @Composable
-fun Unithon11thteam2androidTheme(
+fun OurTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -62,9 +66,21 @@ fun Unithon11thteam2androidTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    val ourColorScheme = OurColorScheme()
+
+    CompositionLocalProvider(
+        LocalOurColor provides ourColorScheme
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
+}
+
+object OurTheme{
+    val color: OurColorScheme
+        @Composable
+        get() = LocalOurColor.current
 }
