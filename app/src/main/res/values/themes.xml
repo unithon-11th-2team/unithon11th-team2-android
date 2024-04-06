@@ -5,6 +5,11 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_background</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/Theme.Unithon11thteam2android</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
-    <style name="Theme.Unithon11thteam2android" parent="android:Theme.Material.Light.NoActionBar"/>
+    <style name="Theme.Unithon11thteam2android" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

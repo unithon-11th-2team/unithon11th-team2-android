@@ -1,0 +1,37 @@
+package com.team2.data.datasource
+
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
+import com.hbd.advent.datastore.PreferenceKeys
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = "our-peace")
+
+class PreferenceManager(
+    @ApplicationContext private val context: Context
+){
+    suspend fun setUserToken(token: String) {
+        context.dataStore.edit {
+            it[PreferenceKeys.token] = token
+        }
+    }
+
+    val userToken: Flow<String?> = context.dataStore.data.map {
+        it[PreferenceKeys.token]
+    }
+
+    suspend fun setUserNickname(nickname: String) {
+        context.dataStore.edit {
+            it[PreferenceKeys.nickname] = nickname
+        }
+    }
+
+    val userNickname: Flow<String?> = context.dataStore.data.map {
+        it[PreferenceKeys.nickname]
+    }
+}

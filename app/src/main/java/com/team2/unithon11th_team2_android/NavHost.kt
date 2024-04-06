@@ -1,30 +1,29 @@
-package com.team2.unithon11th_team2_android
-
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.team2.unithon11th_team2_android.features.home.HomeScreen
-import com.team2.unithon11th_team2_android.features.login.LoginScreen
+import com.team2.unithon11th_team2_android.AppRoute
+import com.team2.unithon11th_team2_android.OurApp
+import com.team2.unithon11th_team2_android.features.home.homeScreen
+import com.team2.unithon11th_team2_android.features.home.navigateToHomeScreen
+import com.team2.unithon11th_team2_android.features.login.LOGIN_ROUTE
+import com.team2.unithon11th_team2_android.features.login.loginScreen
+import com.team2.unithon11th_team2_android.features.login.navigateToLogin
+import com.team2.unithon11th_team2_android.features.permission.permissionScreen
 
-@SuppressLint("MissingPermission")
 @Composable
-fun NavHost(
-    navController: NavHostController = rememberNavController(),
-    startDestination: String = NavRoutes.Login.route,
-    finish: () -> Unit
+fun OurNavHost(
+    navController: NavHostController = rememberNavController()
 ) {
-    NavHost(
+    androidx.navigation.compose.NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = LOGIN_ROUTE
     ) {
-        composable(NavRoutes.Login.route) {
-            LoginScreen(navController)
+        composable(AppRoute.ourPeace) {
+            OurApp(navController)
         }
-        composable(NavRoutes.Home.route) {
-            HomeScreen(finish)
-        }
+        loginScreen(navController::navigateToHomeScreen)
+        homeScreen {  }
+        permissionScreen(navController::navigateToLogin)
     }
 }

@@ -17,6 +17,8 @@ val Black = Color(0xFF131313)
 val Gray = Color(0xFFEDECEA)
 val Red = Color(0xFFC4162D)
 val White = Color(0xFFFFFFFF)
+val Background = Color(0xFFEDECEA)
+val Brown = Color(0xFF1F1E1E)
 
 @Immutable
 data class OurColorScheme(
@@ -24,7 +26,9 @@ data class OurColorScheme(
     val black: Color = Black,
     val gray: Color = Gray,
     val red: Color = Red,
-    val white: Color = White
+    val white: Color = White,
+    val  background: Color = Background,
+    val brown: Color = Brown
 )
 
 val OurColorPalette = staticCompositionLocalOf { OurColorScheme() }

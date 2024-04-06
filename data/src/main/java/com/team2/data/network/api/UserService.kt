@@ -9,9 +9,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UserService {
-    @POST("/api/v1/users/login")
+    @POST("api/v1/users/login")
     suspend fun postUserLogin() : Response<BaseResponse<LoginUserResponse>>
-    @POST("/api/v1/users/sign")
+    @POST("api/v1/users/sign")
     suspend fun postUserSign(
         @Body user: UserRequest
     ) : Response<BaseResponse<SignUserResponse>>

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 
 const val HOME_ROUTE = "home"
 
+
 fun NavHostController.navigateToHomeScreen() = navigate(HOME_ROUTE)
 
 @SuppressLint("MissingPermission")

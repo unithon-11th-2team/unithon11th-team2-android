@@ -4,5 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("org.jetbrains.kotlin.jvm") version "1.8.10" apply false
     alias(libs.plugins.dagger.hilt.android) apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10" apply false
     id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
 }

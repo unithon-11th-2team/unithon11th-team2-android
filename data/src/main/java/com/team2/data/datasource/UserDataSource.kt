@@ -19,7 +19,7 @@ class UserDataSource @Inject constructor(
             emit(
                 userApi.postUserSign(
                     UserRequest(
-                        nickname = user.nickname, deviceId = "123"
+                        nickname = user.nickname, deviceId = user.deviceId
                     )
                 )
             )

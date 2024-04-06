@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 const val PERMISSION_ROUTE = "permission"
 
 fun NavGraphBuilder.permissionScreen(
-    navigateToHome: () -> Unit
+    navigateToLogin: () -> Unit
 ){
     composable(PERMISSION_ROUTE){
-        PermissionScreen(navigateToHome)
+        PermissionScreen(navigateToLogin)
     }
 }

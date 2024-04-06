@@ -72,11 +72,11 @@ dependencies {
 
     // compose navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
     // hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // compose google maps
     implementation ("com.google.maps.android:maps-compose:2.11.4")
