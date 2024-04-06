@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,6 +46,7 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.team2.domain.entity.Comment
 import com.team2.domain.entity.ItemType
 import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.component.DefaultButtonWithIcon
@@ -55,9 +58,9 @@ internal fun RespondScreen(
 ) {
     val state by respondViewModel.uiState.collectAsState()
     var isPlay by remember { mutableStateOf(false) }
-    
-    LaunchedEffect(state.clicked){
-        if(state.clicked){
+
+    LaunchedEffect(state.clicked) {
+        if (state.clicked) {
             isPlay = true
         }
     }
@@ -82,11 +85,17 @@ internal fun RespondScreen(
                     respondViewModel.setEvent(RespondUiEvent.OnClickItem)
                 }
             )
-            if(isPlay){
-                AnimateItemScreen{ isPlay = !isPlay }
-            }
-//            CommentContent()
+            CommentContent(
+                listOf(
+                    Comment(0, "바보", "PEACEFUL......"),
+                    Comment(0, "메롱", "ㅠㅠㅠㅠㅠ 안녕하세요"),
+                    Comment(0, "애옹", "ㅎㅎㅎㅎㅎㅎㅎ")
+                )
+            )
 //            InputCommentContent()
+        }
+        if (isPlay) {
+            AnimateItemScreen { isPlay = !isPlay }
         }
     }
 }
@@ -130,7 +139,7 @@ internal fun ItemDetailContent(
     clicked: Boolean,
     onClickItem: () -> Unit
 ) {
-    val resId = when(type){
+    val resId = when (type) {
         ItemType.TYPE1 -> R.drawable.object_type1
         ItemType.TYPE2 -> R.drawable.object_type2
         ItemType.TYPE3 -> R.drawable.object_type3
@@ -184,25 +193,49 @@ internal fun ItemDetailContent(
 
         DefaultButtonWithIcon(
             text = count.toString(),
-            containerColor = if(clicked) OurTheme.color.primary else OurTheme.color.black,
-            contentColor = if(clicked) Color.Black else Color.White
+            containerColor = if (clicked) OurTheme.color.primary else OurTheme.color.black,
+            contentColor = if (clicked) Color.Black else Color.White
         ) { onClickItem() }
     }
 }
 
 @Composable
-internal fun CommentContent() {
-    Column {
-
+internal fun CommentContent(
+    comments: List<Comment>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(Color.White)
+            .padding(20.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.title_comment) + " ${comments.size}",
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            color = OurTheme.color.black
+        )
+        comments.forEach {
+            CommentItem(nickname = it.nickname, message = it.message)
+        }
     }
 }
 
-@Preview
 @Composable
-internal fun CommentItem(){
-    Column(modifier = Modifier.fillMaxWidth()){
-
+internal fun CommentItem(
+    nickname: String,
+    message: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        Text(text = nickname, color = Color(0xff9D9D9D))
+        Text(text = message)
     }
+    HorizontalDivider()
 }
 
 @Composable
@@ -211,10 +244,10 @@ internal fun InputCommentContent() {
 }
 
 @Composable
-fun AnimateItemScreen(onFinish: () -> Unit){
+fun AnimateItemScreen(onFinish: () -> Unit) {
     val context = LocalContext.current
     val mediaPlayer = MediaPlayer.create(context, R.raw.item_play)
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         mediaPlayer.start()
         mediaPlayer.setOnCompletionListener { onFinish() }
     }
@@ -238,4 +271,10 @@ fun GifImage(
         contentDescription = null,
         modifier = modifier.fillMaxWidth(),
     )
+}
+
+@Preview
+@Composable
+fun CommonPreview() {
+    CommentContent(comments = listOf(Comment(0, "nickname", "message")))
 }
