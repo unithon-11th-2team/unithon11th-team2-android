@@ -14,7 +14,7 @@ internal class MainViewModel @Inject constructor(
 ) : BaseViewModel<MainContract.State, MainContract.Event, MainContract.Effect>() {
     override fun createInitialState(): MainContract.State {
         return MainContract.State(
-            isLoading = mutableStateOf(false), startDestination = mutableStateOf("login")
+            isLoading = mutableStateOf(true), startDestination = mutableStateOf("")
         )
     }
 
@@ -27,7 +27,6 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun getLastRoute() {
-        Timber.e("#### getLastRoute")
         viewModelScope.launch {
             setState(
                 currentState.copy(

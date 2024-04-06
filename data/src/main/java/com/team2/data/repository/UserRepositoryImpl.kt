@@ -2,19 +2,71 @@ package com.team2.data.repository
 
 import com.team2.data.datasource.UserDataSource
 import com.team2.data.model.UserRequest
+import com.team2.domain.common.Resource
+import com.team2.domain.entity.User
 import com.team2.domain.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
-    override suspend fun postUserSign(user: com.team2.domain.entity.User) {
+    override suspend fun postUserSign(user: User): Flow<Resource<User>> {
         // TODO deviceId Util 만들어서 수정하기
-        userDataSource.postUserSign(UserRequest(nickname = user.nickname, deviceId = "123"))
+        return userDataSource.postUserSign(
+            UserRequest(nickname = user.nickname, deviceId = "123")
+        )
+            .map {
+                when (it) {
+                    is Resource.Success -> {
+                        it.data?.let { signUserResponse ->
+                            setUserToken(signUserResponse.token)
+                            setUserNickname(signUserResponse.nickname)
+                            Resource.Success(User(signUserResponse.nickname))
+                        }?: Resource.Error(Exception())
+                    }
+                    is Resource.Error -> {
+                        Resource.Error(it.exception)
+                    }
+                }
+            }
     }
 
-    override suspend fun postUserLogin() {
+    override suspend fun postUserLogin(): Flow<Resource<Boolean>> {
         // token preference 에 저장
-        userDataSource.postUserLogin()
+        return userDataSource.postUserLogin().map {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let {
+                        Resource.Success(true)
+                    }?: Resource.Error(Exception())
+                }
+                is Resource.Error -> {
+                    Resource.Error(it.exception)
+                }
+            }
+        }
+    }
+
+    override suspend fun setUserToken(token: String) {
+
+    }
+
+    override suspend fun hasUserToken(): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Success(false))
+        }
+    }
+
+    override suspend fun setUserNickname(nickname: String) {
+        return
+    }
+
+    override suspend fun getUserNickName(): Flow<Resource<String?>> {
+        return flow {
+            emit(Resource.Success("Test"))
+        }
     }
 }

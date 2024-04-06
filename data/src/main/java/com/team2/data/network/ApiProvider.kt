@@ -1,40 +1,52 @@
 package com.team2.data.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
-
-@OptIn(ExperimentalSerializationApi::class)
+@Singleton
 object ApiProvider {
+    const val BASE_URL = "http://15.165.229.122:8080/"
 
-    private const val BASE_URL = "http://15.165.229.122:8080/"
-    private val contentType = "application/json".toMediaType()
-
-    private val json = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-        explicitNulls = false
-        coerceInputValues = true
-        encodeDefaults = true
-    }
-
-    private val logger = HttpLoggingInterceptor().apply {
+    val logger = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(logger)
-        .build()
-    // TODO AuthTokenInterceptor 추가 하기
+    val jsonConverter = GsonConverterFactory.create()
 
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(json.asConverterFactory(contentType))
-        .client(client)
-        .build()
+    inline fun <reified T> create(): T{
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(jsonConverter)
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(logger)
+                    .addInterceptor(RequestInterceptor())
+                    .build()
+            )
+            .build()
+            .create(T::class.java)
+    }
+
+    inline fun <reified T> createWithoutRequestToken(): T{
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(jsonConverter)
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(logger)
+                    .connectTimeout(100, TimeUnit.SECONDS)
+                    .readTimeout(100, TimeUnit.SECONDS)
+                    .writeTimeout(100, TimeUnit.SECONDS)
+                    .build()
+            )
+            .build()
+            .create(T::class.java)
+    }
 }

@@ -1,9 +1,10 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     alias(libs.plugins.dagger.hilt.android)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
 }
 
 android {
@@ -11,11 +12,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.team2.data"
         minSdk = 31
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,10 +47,12 @@ dependencies {
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    implementation(libs.coroutine.core)
 
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation ("com.squareup.retrofit2:converter-gson:2.1.0")
 
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")

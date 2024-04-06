@@ -1,6 +1,7 @@
 package com.team2.unithon11th_team2_android.common.ui.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -15,11 +16,15 @@ val Primary = Color(0xFFD5A458)
 val Black = Color(0xFF131313)
 val Gray = Color(0xFFEDECEA)
 val Red = Color(0xFFC4162D)
+val White = Color(0xFFFFFFFF)
 
 @Immutable
 data class OurColorScheme(
     val primary: Color = Primary,
     val black: Color = Black,
     val gray: Color = Gray,
-    val red: Color = Red
+    val red: Color = Red,
+    val white: Color = White
 )
+
+val OurColorPalette = staticCompositionLocalOf { OurColorScheme() }

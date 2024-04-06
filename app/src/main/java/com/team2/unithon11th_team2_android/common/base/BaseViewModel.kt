@@ -28,6 +28,10 @@ internal abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: Ui
 
     abstract fun handleEvent(event: Event)
 
+    init {
+        subscribeEvents()
+    }
+
     private fun subscribeEvents(){
         viewModelScope.launch {
             uiEvent.collect{

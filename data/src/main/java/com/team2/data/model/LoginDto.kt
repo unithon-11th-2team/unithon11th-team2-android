@@ -1,26 +1,30 @@
 package com.team2.data.model
 
-import androidx.annotation.Keep
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Keep
 @Serializable
 data class UserRequest(
+    @SerialName("nickname")
     val nickname: String,
+    @SerialName("deviceId")
     val deviceId: String
 )
 
-@Keep
 @Serializable
 data class LoginUserResponse(
+    @SerialName("id")
     val id: Int,
+    @SerialName("nickname")
     val nickname: String
 )
 
-@Keep
 @Serializable
 data class SignUserResponse(
+    @SerialName("id")
     val id: Int,
+    @SerialName("nickname")
     val nickname: String,
+    @SerialName("token")
     val token: String
 )
