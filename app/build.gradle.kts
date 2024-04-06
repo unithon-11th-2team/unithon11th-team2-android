@@ -58,7 +58,6 @@ buildscript {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -74,6 +73,7 @@ dependencies {
     // hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // compose google maps
     implementation ("com.google.maps.android:maps-compose:2.11.4")
@@ -85,11 +85,15 @@ dependencies {
     // google location
     implementation("com.google.android.gms:play-services-location:21.2.0")
 
+    //splash
+    implementation ("androidx.core:core-splashscreen:1.1.0-rc01")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation ("com.jakewharton.timber:timber:5.0.1")
 }
