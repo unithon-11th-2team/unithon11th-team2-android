@@ -9,6 +9,7 @@
     <string name="hint_text_content">기분을 기록해보세요</string>
     <string name="btn_text_register">기록하기</string>
     <string name="appbar_title_detail">%s님의 목탁</string>
+    <string name="title_comment">댓글</string>
     <!--login view-->
 
     <string name="login_header_title">프로필을 설정해주세요</string>
