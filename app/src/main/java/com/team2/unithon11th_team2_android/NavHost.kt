@@ -11,10 +11,13 @@ import com.team2.unithon11th_team2_android.features.login.loginScreen
 import com.team2.unithon11th_team2_android.features.login.navigateToLogin
 import com.team2.unithon11th_team2_android.features.map.mapScreen
 import com.team2.unithon11th_team2_android.features.map.navigateToMapScreen
+import com.team2.unithon11th_team2_android.features.respond.navigateToRespondScreen
+import com.team2.unithon11th_team2_android.features.respond.respondScreen
 
 @Composable
 fun OurNavHost(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    finish: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -24,7 +27,8 @@ fun OurNavHost(
             OurApp(navController)
         }
         loginScreen(navController::navigateToMapScreen)
-        mapScreen {  }
+        mapScreen(navigateToRespond = { navController.navigateToRespondScreen() }) { finish() }
         permissionScreen(navController::navigateToLogin)
+        respondScreen()
     }
 }

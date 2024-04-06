@@ -92,6 +92,7 @@ internal class MapViewModel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         setState(MapUiState())
+                        setEvent(MapUiEvent.FetchItemList)
                     }
 
                     is Resource.Error -> {
@@ -103,6 +104,10 @@ internal class MapViewModel @Inject constructor(
 
     fun updateContent(text: String){
         setState(currentState.copy(sheetData = currentState.sheetData.copy(text = text)))
+    }
+
+    fun loadData(){
+        setEffect(MapUiEffect.Reload)
     }
 
 }
@@ -122,7 +127,7 @@ sealed class MapUiEvent : UiEvent {
 }
 
 sealed class MapUiEffect : UiEffect {
-
+    object Reload: MapUiEffect()
 }
 
 data class SheetData(

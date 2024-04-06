@@ -13,9 +13,10 @@ class RequestInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response  {
         val request = chain.request().newBuilder().apply {
             runBlocking {
-                preferenceManager.userToken.first()?.let {
-                    header("X-CORE-AUTH-TOKEN", it)
-                }
+                header("X-CORE-AUTH-TOKEN", "d0ed2d06-1e5f-4b6e-bdb5-e5c6d4692c8f")
+//                preferenceManager.userToken.first()?.let {
+//                    header("X-CORE-AUTH-TOKEN", "d0ed2d06-1e5f-4b6e-bdb5-e5c6d4692c8f")
+//                }
             }
         }.build()
         return chain.proceed(request)

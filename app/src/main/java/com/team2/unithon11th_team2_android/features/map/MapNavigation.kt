@@ -10,8 +10,8 @@ const val MAP_ROUTE = "map"
 fun NavHostController.navigateToMapScreen() = navigate(MAP_ROUTE)
 
 @SuppressLint("MissingPermission")
-fun NavGraphBuilder.mapScreen(finish: () -> Unit){
+fun NavGraphBuilder.mapScreen(navigateToRespond: () -> Unit, finish: () -> Unit){
     composable(MAP_ROUTE) {
-        MapScreen(onBackPressed = finish)
+        MapScreen(navigateToRespond = navigateToRespond, onBackPressed = finish)
     }
 }

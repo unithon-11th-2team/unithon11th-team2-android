@@ -51,6 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -69,19 +70,31 @@ import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
 )
 @Composable
 internal fun MapScreen(
-    mapViewModel: MapViewModel = hiltViewModel(), onBackPressed: () -> Unit
+    navigateToRespond: () -> Unit,
+    onBackPressed: () -> Unit,
+    mapViewModel: MapViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     val cameraPositionState = rememberCameraPositionState()
 
+
+    val state by mapViewModel.uiState.collectAsState()
+    var currentPinResId by remember { mutableStateOf(-1) }
+
     LaunchedEffect(true) {
-        locationClient.lastLocation.addOnCompleteListener {
-            it.result.apply {
-                mapViewModel.setEvent(MapUiEvent.InitCurrentLocation(latitude, longitude))
-                mapViewModel.setEvent(MapUiEvent.FetchItemList)
-                cameraPositionState.position =
-                    CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
+        mapViewModel.uiEffect.collect{
+            when(it){
+                is MapUiEffect.Reload -> {
+                    locationClient.lastLocation.addOnCompleteListener {
+                        it.result.apply {
+                            mapViewModel.setEvent(MapUiEvent.InitCurrentLocation(latitude, longitude))
+                            mapViewModel.setEvent(MapUiEvent.FetchItemList)
+                            cameraPositionState.position =
+                                CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
+                        }
+                    }
+                }
             }
         }
     }
@@ -90,10 +103,8 @@ internal fun MapScreen(
         onBackPressed()
     }
 
-    val state by mapViewModel.uiState.collectAsState()
-    var currentPinResId by remember { mutableStateOf(-1) }
-
     LaunchedEffect(state.sheetData.step) {
+        mapViewModel.loadData()
         currentPinResId = when (state.sheetData.step) {
             Step.INIT -> R.drawable.my_pin
             Step.LEVEL -> R.drawable.pin_empty
@@ -127,14 +138,14 @@ internal fun MapScreen(
                     ItemType.TYPE5 -> if(it.isMine) R.drawable.pin_mine_type5 else R.drawable.pin_other_type5
                 }
                 CustomPin(location = LatLng(it.latitude, it.longitude), iconResId = resId){
-                    //TODO
+                    // TODO data
+                    navigateToRespond()
                 }
-            }
-            CustomPin(state.currentLocation, currentPinResId){
-
+            }.also {
+                CustomPin(state.currentLocation, currentPinResId, 1.0f)
             }
         }
-        MapTopBar(modifier = Modifier.align(TopCenter))
+        MapTopBar(modifier = Modifier.align(TopCenter)){ onBackPressed() }
 
         when (state.sheetData.step) {
             Step.INIT -> {
@@ -303,7 +314,7 @@ internal fun InputContentScreen(
 }
 
 @Composable
-internal fun MapTopBar(modifier: Modifier = Modifier) {
+internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier
             .fillMaxWidth()
@@ -315,7 +326,7 @@ internal fun MapTopBar(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(48.dp)
                 .align(CenterStart),
-            onClick = { /*TODO*/ }) {
+            onClick = onClick) {
             Icon(
                 painter = painterResource(id = R.drawable.back),
                 contentDescription = null
@@ -361,12 +372,12 @@ internal fun ActionButton(title: String) {
 }
 
 @Composable
-internal fun CustomPin(location: LatLng, iconResId: Int, onClick: () -> Unit = {}) {
+internal fun CustomPin(location: LatLng, iconResId: Int, zIndex: Float = 0.0f, onClick: () -> Unit = {}) {
     val context = LocalContext.current
     val icon = bitmapDescriptorFromVector(
         context, iconResId
     )
-    Marker(state = MarkerState(location), icon = icon, onClick = {
+    Marker(state = MarkerState(location), icon = icon, zIndex = zIndex, onClick = {
         onClick()
         false
     })
