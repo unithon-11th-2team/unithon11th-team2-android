@@ -1,9 +1,13 @@
 [versions]
 hilt = "2.44"
+coroutine = "1.7.3"
 
 [libraries]
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+dagger-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine"}
+
 
 [plugins]
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

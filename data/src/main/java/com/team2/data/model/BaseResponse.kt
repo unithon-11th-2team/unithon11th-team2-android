@@ -1,5 +1,8 @@
 package com.team2.data.model
 
-sealed class BaseResponse<out T> (
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class BaseResponse<T> (
     val data: T
 )

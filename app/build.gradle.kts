@@ -58,6 +58,8 @@ buildscript {
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -74,6 +76,9 @@ dependencies {
     // hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+
+    // hilt navigation viewmodel
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // compose google maps
     implementation ("com.google.maps.android:maps-compose:2.11.4")
