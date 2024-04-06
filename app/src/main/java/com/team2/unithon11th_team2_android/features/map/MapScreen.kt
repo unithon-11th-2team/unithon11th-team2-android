@@ -52,6 +52,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -64,6 +66,7 @@ import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.bitmapDescriptorFromVector
 import com.team2.unithon11th_team2_android.common.ui.component.DefaultButton
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
+import com.team2.unithon11th_team2_android.features.myitem.MY_ITEM_LIST
 
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]

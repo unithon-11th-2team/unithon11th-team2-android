@@ -3,10 +3,13 @@ package com.team2.data.network.api
 import com.team2.data.model.BaseResponse
 import com.team2.data.model.response.ItemDetailDto
 import com.team2.data.model.response.ItemDto
+import com.team2.data.model.response.ItemInfoDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ItemService {
@@ -25,4 +28,13 @@ interface ItemService {
     suspend fun getItemDetail(
         @Query("itemId") itemId: Int
     ): Response<BaseResponse<ItemDetailDto>>
+
+    @GET("api/v1/items/my-items")
+    suspend fun getMyItems(
+    ): Response<BaseResponse<List<ItemInfoDto>>>
+
+    @DELETE("api/v1/items/{id}")
+    suspend fun deleteMyItem(
+        @Path("id") id: Int
+    ): Response<BaseResponse<Unit>>
 }

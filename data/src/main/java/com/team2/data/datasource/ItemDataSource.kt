@@ -2,6 +2,7 @@ package com.team2.data.datasource
 
 import com.team2.data.model.response.ItemDetailDto
 import com.team2.data.model.response.ItemDto
+import com.team2.data.model.response.ItemInfoDto
 import com.team2.data.network.api.ItemService
 import com.team2.domain.common.Resource
 import javax.inject.Inject
@@ -49,4 +50,33 @@ class ItemDataSource @Inject constructor(
     } catch (e: Exception){
         Resource.Error(e)
     }
+
+    suspend fun getMyItemList() : Resource<List<ItemInfoDto>> = try {
+        (itemApi.getMyItems()).let {
+            if(it.isSuccessful){
+                it.body()?.let { result ->
+                    Resource.Success(result.data)
+                } ?: Resource.Error(Exception("null"))
+            }else{
+                Resource.Error(Exception(it.message()))
+            }
+        }
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun deleteMyItem(itemId: Int) : Resource<Unit> = try {
+        (itemApi.deleteMyItem(itemId)).let {
+            if(it.isSuccessful){
+                it.body()?.let { result ->
+                    Resource.Success(result.data)
+                } ?: Resource.Error(Exception("null"))
+            }else{
+                Resource.Error(Exception(it.message()))
+            }
+        }
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
 }

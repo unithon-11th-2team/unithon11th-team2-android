@@ -19,6 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.theme.OurColorPalette
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTypo
@@ -29,6 +32,7 @@ import timber.log.Timber
 
 @Composable
 internal fun LoginScreen(
+    navController: NavController,
     onSuccessLogin: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -40,7 +44,7 @@ internal fun LoginScreen(
             if ((state.state as LoginState.SUCCESS).newUser) {
                 onSuccessLogin()
             } else {
-                // TODO error handing
+                navController.popBackStack()
             }
         }
 
@@ -56,7 +60,6 @@ internal fun LoginScreen(
             isBackIconVisible = true,
             appbarColor = OurColorPalette.current.white,
             onBackButtonAction = {
-                // TODO Back - 앱 종료!
             }
         )
         Column(
@@ -79,6 +82,7 @@ internal fun LoginScreen(
                     .padding()
                     .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(4.dp))
                     .padding(horizontal = 4.dp, vertical = 4.dp),
+                singleLine = true,
                 decorationBox = { innerTextField ->
                     if (nickname.isEmpty()) {
                         Text(

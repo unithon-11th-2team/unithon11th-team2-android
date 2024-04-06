@@ -1,5 +1,6 @@
 package com.team2.data.model.request
 
+import com.team2.data.model.response.ItemDto
 import com.team2.domain.entity.Item
 import com.team2.domain.entity.ItemType
 import kotlinx.serialization.Serializable
@@ -11,6 +12,7 @@ data class ItemDto(
     val longitude: Double,
     val type: String
 )
+
 
 fun Item.toItemDto() =
     ItemDto(message = message, latitude = latitude, longitude = longitude, type = type.name)

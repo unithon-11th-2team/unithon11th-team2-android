@@ -1,5 +1,6 @@
 package com.team2.data.model.response
 
+import com.team2.data.model.request.ItemDto
 import com.team2.domain.entity.Item
 import com.team2.domain.entity.ItemType
 import kotlinx.serialization.Serializable

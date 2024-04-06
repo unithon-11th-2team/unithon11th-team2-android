@@ -10,12 +10,17 @@ import javax.inject.Inject
 
 class ItemRepositoryImpl @Inject constructor(
     private val itemDataSource: ItemDataSource
-): ItemRepository {
+) : ItemRepository {
     override suspend fun getItems(latitude: Double, longitude: Double): Resource<List<Item>> {
         return itemDataSource.getItems(latitude, longitude).let {
-            when(it){
-                is Resource.Success -> { Resource.Success(it.data.map { item -> item.toItem() }) }
-                is Resource.Error -> { it }
+            when (it) {
+                is Resource.Success -> {
+                    Resource.Success(it.data.map { item -> item.toItem() })
+                }
+
+                is Resource.Error -> {
+                    it
+                }
             }
         }
     }

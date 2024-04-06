@@ -15,4 +15,10 @@
     <string name="login_explain">닉네임을 입력해주세요</string>
     <string name="login_hint_explain">2~10자의 닉네임을 입력해주세요</string>
 
+    <!--myItemList view-->
+    <string name="my_item_list_title">내 목탁 조회</string>
+    <string name="hang_item">목탁 던지러 가기</string>
+    <string name="empty_item_title">목탁 내역이 없어요</string>
+    <string name="delete">삭제</string>
+
 </resources>

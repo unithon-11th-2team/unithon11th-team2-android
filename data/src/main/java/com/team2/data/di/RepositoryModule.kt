@@ -1,8 +1,10 @@
 package com.team2.data.di
 
 import com.team2.data.repository.ItemRepositoryImpl
+import com.team2.data.repository.MyItemRepositoryImpl
 import com.team2.data.repository.UserRepositoryImpl
 import com.team2.domain.repository.ItemRepository
+import com.team2.domain.repository.MyItemRepository
 import com.team2.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -24,4 +26,10 @@ abstract class RepositoryModule {
     abstract fun bindItemRepository(
         itemRepositoryImpl: ItemRepositoryImpl
     ): ItemRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMyItemRepository(
+        itemRepositoryImpl: MyItemRepositoryImpl
+    ): MyItemRepository
 }

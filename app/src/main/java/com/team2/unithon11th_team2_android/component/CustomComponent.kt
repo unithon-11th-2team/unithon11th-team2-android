@@ -100,14 +100,14 @@ fun TitleText(title: String, modifier: Modifier, textAlign: TextAlign = TextAlig
 }
 
 @Composable
-fun MainButton(title: String, modifier: Modifier, onClickAction: () -> Unit) {
+fun MainButton(title: String, fontSize: Int = 10, modifier: Modifier, onClickAction: () -> Unit) {
     Button(
         onClick = {
             onClickAction()
 
         },
         modifier = modifier,
-        shape = RoundedCornerShape(size = 10.dp),
+        shape = RoundedCornerShape(size = fontSize.dp),
         colors = ButtonDefaults.run {
             buttonColors(
                 disabledContainerColor = OurColorPalette.current.brown,
