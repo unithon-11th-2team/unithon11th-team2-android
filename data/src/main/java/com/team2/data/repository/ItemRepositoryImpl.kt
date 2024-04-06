@@ -23,4 +23,13 @@ class ItemRepositoryImpl @Inject constructor(
     override suspend fun postItem(item: Item): Resource<Unit> {
         return itemDataSource.postItem(item.toItemDto())
     }
+
+    override suspend fun getItemDetail(itemId: Int): Resource<Item> {
+        return itemDataSource.getItemDetail(itemId).let {
+            when(it){
+                is Resource.Success -> { Resource.Success(it.data.toItem()) }
+                is Resource.Error -> { it }
+            }
+        }
+    }
 }

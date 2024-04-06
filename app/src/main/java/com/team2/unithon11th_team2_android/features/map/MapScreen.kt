@@ -70,7 +70,7 @@ import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
 )
 @Composable
 internal fun MapScreen(
-    navigateToRespond: () -> Unit,
+    navigateToRespond: (Int) -> Unit,
     onBackPressed: () -> Unit,
     mapViewModel: MapViewModel = hiltViewModel()
 ) {
@@ -138,8 +138,7 @@ internal fun MapScreen(
                     ItemType.TYPE5 -> if(it.isMine) R.drawable.pin_mine_type5 else R.drawable.pin_other_type5
                 }
                 CustomPin(location = LatLng(it.latitude, it.longitude), iconResId = resId){
-                    // TODO data
-                    navigateToRespond()
+                    navigateToRespond(it.id ?: -1)
                 }
             }.also {
                 CustomPin(state.currentLocation, currentPinResId, 1.0f)

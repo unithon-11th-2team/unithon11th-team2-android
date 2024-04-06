@@ -1,5 +1,6 @@
 package com.team2.data.datasource
 
+import com.team2.data.model.response.ItemDetailDto
 import com.team2.data.model.response.ItemDto
 import com.team2.data.network.api.ItemService
 import com.team2.domain.common.Resource
@@ -29,6 +30,18 @@ class ItemDataSource @Inject constructor(
         itemApi.postItem(item).let {
             if(it.isSuccessful){
                 Resource.Success(Unit)
+            } else {
+                Resource.Error(Exception(it.message()))
+            }
+        }
+    } catch (e: Exception){
+        Resource.Error(e)
+    }
+
+    suspend fun getItemDetail(itemId: Int): Resource<ItemDetailDto> = try {
+        itemApi.getItemDetail(itemId).let {
+            if(it.isSuccessful){
+                it.body()?.let { Resource.Success(it.data) } ?: Resource.Error(Exception("null"))
             } else {
                 Resource.Error(Exception(it.message()))
             }

@@ -18,9 +18,11 @@ data class ItemDto(
 
 fun ItemDto.toItem() =
     Item(
+        id = id,
         message = message,
         type = ItemType.valueOf(type),
         latitude = latitude,
         longitude = longitude,
+        address = address,
         isMine = isMine
     )

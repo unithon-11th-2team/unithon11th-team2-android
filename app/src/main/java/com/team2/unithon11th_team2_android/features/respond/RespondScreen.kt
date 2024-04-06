@@ -23,21 +23,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.team2.domain.entity.ItemType
 import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.component.DefaultButtonWithIcon
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
 
 @Composable
-fun RespondScreen() {
+internal fun RespondScreen(
+    respondViewModel: RespondViewModel = hiltViewModel()
+) {
+    val state by respondViewModel.uiState.collectAsState()
     Scaffold(
         containerColor = OurTheme.color.gray,
-        topBar = { RespondTopBar() }
+        topBar = { RespondTopBar(state.userName) }
     ) {
         Column(
             Modifier
@@ -45,7 +53,13 @@ fun RespondScreen() {
                 .padding(it)
                 .verticalScroll(rememberScrollState())
         ) {
-            ItemDetailContent()
+            ItemDetailContent(
+                type = state.type,
+                date = state.date,
+                address = state.address,
+                message = state.message,
+                count = state.count
+            )
             CommentContent()
             InputCommentContent()
         }
@@ -53,7 +67,7 @@ fun RespondScreen() {
 }
 
 @Composable
-internal fun RespondTopBar() {
+internal fun RespondTopBar(nickname: String) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -74,16 +88,28 @@ internal fun RespondTopBar() {
 
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "title",
+            text = stringResource(id = R.string.appbar_title_detail, nickname),
             color = OurTheme.color.secondary,
             style = MaterialTheme.typography.titleSmall
         )
     }
 }
 
-@Preview
 @Composable
-internal fun ItemDetailContent() {
+internal fun ItemDetailContent(
+    type: ItemType,
+    date: String,
+    address: String,
+    message: String,
+    count: Int
+) {
+    val resId = when(type){
+        ItemType.TYPE1 -> R.drawable.object_type1
+        ItemType.TYPE2 -> R.drawable.object_type2
+        ItemType.TYPE3 -> R.drawable.object_type3
+        ItemType.TYPE4 -> R.drawable.object_type4
+        ItemType.TYPE5 -> R.drawable.object_type5
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -100,18 +126,18 @@ internal fun ItemDetailContent() {
                 modifier = Modifier
                     .width(90.dp)
                     .wrapContentHeight(),
-                painter = painterResource(id = R.drawable.object_type3),
+                painter = painterResource(id = resId),
                 tint = Color.Unspecified,
                 contentDescription = null
             )
             Column(modifier = Modifier.align(Alignment.Bottom)) {
                 Text(
-                    text = "24.04.06 AM02:45",
+                    text = date,
                     style = MaterialTheme.typography.bodyLarge,
                     color = OurTheme.color.black
                 )
                 Text(
-                    text = "서울시 용산구",
+                    text = address,
                     style = MaterialTheme.typography.bodyLarge,
                     color = OurTheme.color.black
                 )
@@ -126,11 +152,11 @@ internal fun ItemDetailContent() {
                 .background(color = Color.White, shape = RoundedCornerShape(12.dp))
                 .padding(20.dp)
         ) {
-            Text(text = "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+            Text(text = message)
         }
 
         DefaultButtonWithIcon(
-            text = "text",
+            text = count.toString(),
             containerColor = OurTheme.color.black,
             contentColor = Color.White
         ) {

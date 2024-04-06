@@ -93,6 +93,12 @@ dependencies {
 
     //splash
     implementation ("androidx.core:core-splashscreen:1.1.0-rc01")
+
+    // coil
+    implementation("io.coil-kt:coil:2.0.0-rc02")
+    implementation("io.coil-kt:coil-gif:2.0.0-rc02")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc02")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

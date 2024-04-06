@@ -27,7 +27,11 @@ fun OurNavHost(
             OurApp(navController)
         }
         loginScreen(navController::navigateToMapScreen)
-        mapScreen(navigateToRespond = { navController.navigateToRespondScreen() }) { finish() }
+        mapScreen(
+            navigateToRespond = {
+                    id -> navController.navigateToRespondScreen(id)
+            }
+        ) { finish() }
         permissionScreen(navController::navigateToLogin)
         respondScreen()
     }
