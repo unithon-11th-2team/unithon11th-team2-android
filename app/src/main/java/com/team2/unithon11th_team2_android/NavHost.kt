@@ -30,11 +30,12 @@ fun OurNavHost(
         composable(AppRoute.ourPeace) {
             OurApp(navController)
         }
-        loginScreen(navController, navController::navigateToMyItemList)
+        loginScreen(navController, navController::navigateToMapScreen)
         mapScreen(
             navigateToRespond = {
                     id -> navController.navigateToRespondScreen(id)
-            }
+            },
+            navigateToMyItemList = navController::navigateToMyItemList
         ) { finish() }
         permissionScreen(navController::navigateToLogin)
         myItemListScreen(navController::navigateToMapScreen, navController::navigateToMapScreen)

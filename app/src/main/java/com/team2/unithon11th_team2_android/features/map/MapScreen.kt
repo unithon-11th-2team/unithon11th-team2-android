@@ -73,6 +73,7 @@ import com.team2.unithon11th_team2_android.features.myitem.MY_ITEM_LIST
 )
 @Composable
 internal fun MapScreen(
+    navigateToMyItemList: () -> Unit,
     navigateToRespond: (Int) -> Unit,
     onBackPressed: () -> Unit,
     mapViewModel: MapViewModel = hiltViewModel()
@@ -147,7 +148,7 @@ internal fun MapScreen(
                 CustomPin(state.currentLocation, currentPinResId, 1.0f)
             }
         }
-        MapTopBar(modifier = Modifier.align(TopCenter)){ onBackPressed() }
+        MapTopBar(modifier = Modifier.align(TopCenter), navigateToMyItemList = navigateToMyItemList, onClick = onBackPressed)
 
         when (state.sheetData.step) {
             Step.INIT -> {
@@ -316,7 +317,7 @@ internal fun InputContentScreen(
 }
 
 @Composable
-internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, navigateToMyItemList: () -> Unit) {
     Box(
         modifier
             .fillMaxWidth()
@@ -339,19 +340,23 @@ internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
             modifier = Modifier.align(CenterEnd),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ActionButton(title = stringResource(id = R.string.btn_text_fetch_items))
-            ActionButton(title = stringResource(id = R.string.btn_text_ranking))
+            ActionButton(title = stringResource(id = R.string.btn_text_fetch_items), navigateToMyItemList)
+            // TODO navigateToRanking
+            ActionButton(title = stringResource(id = R.string.btn_text_ranking), navigateToMyItemList)
         }
     }
 }
 
 @Composable
-internal fun ActionButton(title: String) {
+internal fun ActionButton(title: String, moveToPage: ()-> Unit) {
     Box(
         modifier = Modifier
             .wrapContentSize()
             .background(color = Color.White, shape = RoundedCornerShape(15.dp))
             .padding(horizontal = 10.dp, vertical = 5.dp)
+            .clickable {
+                moveToPage()
+            }
     ) {
         Row(modifier = Modifier.align(Center)) {
             Icon(
