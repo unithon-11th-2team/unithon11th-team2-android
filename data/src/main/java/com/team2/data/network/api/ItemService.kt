@@ -5,8 +5,10 @@ import com.team2.data.model.response.ItemDetailDto
 import com.team2.data.model.response.ItemDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ItemService {
@@ -25,4 +27,10 @@ interface ItemService {
     suspend fun getItemDetail(
         @Query("itemId") itemId: Int
     ): Response<BaseResponse<ItemDetailDto>>
+
+    @POST("/api/v1/item-like/{id}")
+    suspend fun postItemLike(@Path("id") id: Int): Response<Unit>
+
+    @DELETE("/api/v1/item-like/{id}")
+    suspend fun deleteItemLike(@Path("id") id: Int): Response<Unit>
 }

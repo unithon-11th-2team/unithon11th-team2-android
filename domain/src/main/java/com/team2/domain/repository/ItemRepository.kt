@@ -7,4 +7,6 @@ interface ItemRepository {
     suspend fun getItems(latitude: Double, longitude: Double): Resource<List<Item>>
     suspend fun postItem(item: Item): Resource<Unit>
     suspend fun getItemDetail(itemId: Int): Resource<Item>
+    suspend fun postItemLike(id: Int): Resource<Unit>
+    suspend fun deleteItemLike(id: Int): Resource<Unit>
 }

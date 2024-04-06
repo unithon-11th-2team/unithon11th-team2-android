@@ -5,7 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.team2.domain.common.Resource
 import com.team2.domain.entity.ItemType
+import com.team2.domain.usecase.item.DeleteItemLikeUseCase
 import com.team2.domain.usecase.item.GetItemDetailUsecase
+import com.team2.domain.usecase.item.RegisterItemLikeUseCase
+import com.team2.domain.usecase.item.RegisterItemUseCase
 import com.team2.unithon11th_team2_android.common.base.BaseViewModel
 import com.team2.unithon11th_team2_android.common.base.UiEffect
 import com.team2.unithon11th_team2_android.common.base.UiEvent
@@ -18,7 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RespondViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getItemDetailUsecase: GetItemDetailUsecase
+    private val getItemDetailUsecase: GetItemDetailUsecase,
+    private val registerItemLikeUseCase: RegisterItemLikeUseCase,
+    private val deleteItemLikeUseCase: DeleteItemLikeUseCase
 ): BaseViewModel<RespondUiState, RespondUiEvent, RespondUiEffect>() {
     private val itemId: Int = checkNotNull(savedStateHandle["id"])
 
@@ -36,7 +41,13 @@ internal class RespondViewModel @Inject constructor(
             }
 
             is RespondUiEvent.OnClickItem ->{
-                val diff = if(currentState.clicked) -1 else +1
+                val diff = if(currentState.clicked){
+                    deleteLike()
+                    -1
+                } else {
+                    addLike()
+                    +1
+                }
                 setState(
                     currentState.copy(
                         clicked = !currentState.clicked,
@@ -66,6 +77,22 @@ internal class RespondViewModel @Inject constructor(
                         Timber.d("gowoon fail detail ${it.exception}")
                     }
                 }
+            }
+        }
+    }
+
+    private fun addLike(){
+        viewModelScope.launch {
+            registerItemLikeUseCase(itemId).collect{
+
+            }
+        }
+    }
+
+    private fun deleteLike(){
+        viewModelScope.launch {
+            deleteItemLikeUseCase(itemId).collect {
+
             }
         }
     }

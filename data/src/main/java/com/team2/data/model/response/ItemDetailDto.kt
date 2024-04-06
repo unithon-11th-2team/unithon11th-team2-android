@@ -36,7 +36,7 @@ fun ItemDetailDto.toItem() =
         latitude = latitude,
         longitude = longitude,
         address = address,
-        createdAt = createdAt,
+        createdAt = createdAt.substring(0, 10),
         likeCount = likeCounts,
         userName = nickname
     )
