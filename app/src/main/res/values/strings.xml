@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">unithon11th-team2-android</string>
+
+    <!--login view-->
+    <string name="login_header_title">프로필을 설정해주세요</string>
+    <string name="login_explain">닉네임을 입력해주세요</string>
+    <string name="login_hint_explain">2~10자의 닉네임을 입력해주세요</string>
+
 </resources>

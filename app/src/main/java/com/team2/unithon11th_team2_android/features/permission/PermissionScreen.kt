@@ -8,12 +8,14 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import timber.log.Timber
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermissionScreen(
     onGrantPermission: () -> Unit
 ) {
+    Timber.e("##### PERMISSION SCREEN")
     val locationPermission =
         rememberPermissionState(permission = Manifest.permission.ACCESS_COARSE_LOCATION)
 

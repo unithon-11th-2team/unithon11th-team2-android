@@ -1,6 +1,6 @@
 package com.team2.data.di
 
-import com.team2.data.network.ApiProvider
+import com.team2.data.datasource.UserDataSource
 import com.team2.data.network.api.UserService
 import dagger.Module
 import dagger.Provides
@@ -10,10 +10,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object DataSourceModule {
     @Singleton
     @Provides
-    fun provideUserService() : UserService {
-        return ApiProvider.createWithoutRequestToken()
+    fun provideUserDataSource(
+        userApi: UserService
+    ): UserDataSource {
+        return UserDataSource(userApi)
     }
 }

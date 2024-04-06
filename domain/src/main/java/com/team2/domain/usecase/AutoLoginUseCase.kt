@@ -9,11 +9,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginUseCase @Inject constructor(
+class AutoLoginUseCase @Inject constructor(
     private val userRepository: UserRepository
 ){
-    suspend operator fun invoke(nickname: String): Flow<Resource<User>> {
-        return userRepository.postUserSign(User(nickname = nickname))
+    suspend operator fun invoke(): Flow<Resource<Boolean>> {
+        return userRepository.postUserLogin()
     }
 
 }
