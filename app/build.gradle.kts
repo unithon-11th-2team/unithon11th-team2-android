@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     alias(libs.plugins.dagger.hilt.android)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -52,6 +53,10 @@ android {
     }
 }
 
+buildscript {
+    repositories { mavenCentral() }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -62,10 +67,23 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+
+    // compose navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
+    // hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+
+    // compose google maps
+    implementation ("com.google.maps.android:maps-compose:2.11.4")
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+
+    // compose permission
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
+    // google location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
