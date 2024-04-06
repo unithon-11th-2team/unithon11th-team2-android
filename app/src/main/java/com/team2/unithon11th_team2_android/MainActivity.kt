@@ -12,7 +12,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             Unithon11thteam2androidTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController)
+                NavHost(navController = navController){
+                    finish()
+                }
             }
         }
     }

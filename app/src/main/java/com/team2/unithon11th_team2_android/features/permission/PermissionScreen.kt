@@ -1,6 +1,7 @@
 package com.team2.unithon11th_team2_android.features.permission
 
 import android.Manifest
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -18,13 +19,15 @@ fun PermissionScreen(
 
     LaunchedEffect(locationPermission.status) {
         if (locationPermission.status.isGranted) {
+            Log.e("gowoon", " granted")
             onGrantPermission()
         } else {
             if (locationPermission.status.shouldShowRationale) {
-                // has denied
+                Log.e("gowoon", "rationale")
             } else {
-                // first time
+                Log.e("gowoon", "first")
             }
+            locationPermission.launchPermissionRequest()
         }
 
     }
