@@ -8,7 +8,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-dependencies{
+dependencies {
     implementation(libs.dagger.hilt.core)
     implementation(libs.coroutine.core)
 }

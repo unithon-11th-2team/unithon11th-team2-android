@@ -8,4 +8,10 @@
     <string name="title_text_select_item">지금 기분에 맞는 목탁을 선택하세요!</string>
     <string name="hint_text_content">기분을 기록해보세요</string>
     <string name="btn_text_register">기록하기</string>
+    <!--login view-->
+
+    <string name="login_header_title">프로필을 설정해주세요</string>
+    <string name="login_explain">닉네임을 입력해주세요</string>
+    <string name="login_hint_explain">2~10자의 닉네임을 입력해주세요</string>
+
 </resources>

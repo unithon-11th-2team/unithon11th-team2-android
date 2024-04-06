@@ -1,5 +1,6 @@
 package com.team2.data.di
 
+import com.team2.data.datasource.PreferenceManager
 import com.team2.data.network.ApiProvider
 import com.team2.data.network.api.ItemService
 import com.team2.data.network.api.UserService
@@ -10,8 +11,8 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.create
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Singleton
     @Provides
@@ -21,7 +22,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideItemService(): ItemService{
-        return ApiProvider.create()
+    fun provideItemService(preferenceManager: PreferenceManager): ItemService{
+        return ApiProvider.create(preferenceManager)
     }
 }
