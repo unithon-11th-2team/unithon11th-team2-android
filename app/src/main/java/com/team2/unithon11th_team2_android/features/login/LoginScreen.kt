@@ -1,5 +1,6 @@
 package com.team2.unithon11th_team2_android.features.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -13,8 +14,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -56,7 +59,7 @@ internal fun LoginScreen(
     }
     Column {
         AppBarWithBackNavigation(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().background(OurColorPalette.current.background),
             isBackIconVisible = true,
             appbarColor = OurColorPalette.current.white,
             onBackButtonAction = {
@@ -68,11 +71,9 @@ internal fun LoginScreen(
                 .padding(horizontal = 20.dp)
         ) {
 
-            TitleText(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.login_header_title),
-                textAlign = TextAlign.Center
-            )
+           Image(
+               painter = painterResource(R.drawable.profile_title_img), contentDescription = null,
+               alignment = Alignment.Center)
             Spacer(modifier = Modifier.padding(20.dp))
             BasicTextField(
                 modifier = Modifier
@@ -87,7 +88,7 @@ internal fun LoginScreen(
                     if (nickname.isEmpty()) {
                         Text(
                             text = stringResource(id = R.string.login_explain),
-                            style = OurTypo.current.Body01
+                            style = OurTypo.current.Body01.copy(color = OurColorPalette.current.lightGray)
                         )
                     }
                     innerTextField()

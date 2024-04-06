@@ -21,7 +21,7 @@ val Background = Color(0xFFEDECEA)
 val Brown = Color(0xFF1F1E1E)
 val Secondary = Color(0xFF493E28)
 val RightGold = Color(0xFFDCD9D5)
-
+val LightGray = Color(0xFFC7C7C7)
 @Immutable
 data class OurColorScheme(
     val primary: Color = Primary,
@@ -32,7 +32,8 @@ data class OurColorScheme(
     val background: Color = Background,
     val brown: Color = Brown,
     val rightGold: Color = RightGold,
-    val secondary: Color = Secondary
+    val secondary: Color = Secondary,
+    val lightGray: Color = LightGray
 )
 
 val OurColorPalette = staticCompositionLocalOf { OurColorScheme() }
