@@ -79,4 +79,28 @@ class ItemDataSource @Inject constructor(
         Resource.Error(e)
     }
 
+
+    suspend fun postItemLike(id: Int): Resource<Unit> = try {
+        itemApi.postItemLike(id).let {
+            if(it.isSuccessful){
+                Resource.Success(Unit)
+            } else {
+                Resource.Error(Exception(it.message()))
+            }
+        }
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun deleteItemLike(id: Int): Resource<Unit> = try {
+        itemApi.deleteItemLike(id).let {
+            if(it.isSuccessful){
+                Resource.Success(Unit)
+            } else {
+                Resource.Error(Exception(it.message()))
+            }
+        }
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
 }

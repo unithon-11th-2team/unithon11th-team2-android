@@ -37,4 +37,12 @@ class ItemRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun postItemLike(id: Int): Resource<Unit> {
+        return itemDataSource.postItemLike(id)
+    }
+
+    override suspend fun deleteItemLike(id: Int): Resource<Unit> {
+        return itemDataSource.deleteItemLike(id)
+    }
 }

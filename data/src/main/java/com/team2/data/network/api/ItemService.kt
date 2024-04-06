@@ -37,4 +37,10 @@ interface ItemService {
     suspend fun deleteMyItem(
         @Path("id") id: Int
     ): Response<BaseResponse<Unit>>
+
+    @POST("/api/v1/item-like/{id}")
+    suspend fun postItemLike(@Path("id") id: Int): Response<Unit>
+
+    @DELETE("/api/v1/item-like/{id}")
+    suspend fun deleteItemLike(@Path("id") id: Int): Response<Unit>
 }
