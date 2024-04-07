@@ -1,6 +1,7 @@
 package com.team2.unithon11th_team2_android.features.map
 
 import android.Manifest
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.background
@@ -68,6 +69,7 @@ import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
 )
 @Composable
 internal fun MapScreen(
+    navigateToRanking: () -> Unit,
     navigateToMyItemList: () -> Unit,
     navigateToRespond: (Int) -> Unit,
     onBackPressed: () -> Unit,
@@ -89,13 +91,13 @@ internal fun MapScreen(
                         it.result.apply {
                             mapViewModel.setEvent(
                                 MapUiEvent.InitCurrentLocation(
-                                    latitude,
-                                    longitude
+                                    latitude - 0.003,
+                                    longitude + 0.003
                                 )
                             )
                             mapViewModel.setEvent(MapUiEvent.FetchItemList)
                             cameraPositionState.position =
-                                CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
+                                CameraPosition.fromLatLngZoom(LatLng(latitude - 0.003, longitude + 0.003), 17f)
                         }
                     }
                 }
@@ -104,7 +106,19 @@ internal fun MapScreen(
     }
 
     BackHandler {
-        onBackPressed()
+        when(state.sheetData.step){
+            Step.INIT -> {
+                onBackPressed()
+            }
+
+            Step.LEVEL -> {
+                mapViewModel.updateStep(Step.INIT)
+            }
+
+            Step.CONTENT -> {
+                mapViewModel.updateStep(Step.LEVEL)
+            }
+        }
     }
 
     LaunchedEffect(state.sheetData.step) {
@@ -151,6 +165,7 @@ internal fun MapScreen(
         MapTopBar(
             modifier = Modifier.align(TopCenter),
             navigateToMyItemList = navigateToMyItemList,
+            navigateToRanking = navigateToRanking,
             onClick = onBackPressed
         )
 
@@ -324,6 +339,7 @@ internal fun InputContentScreen(
 internal fun MapTopBar(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    navigateToRanking: () -> Unit,
     navigateToMyItemList: () -> Unit
 ) {
     Box(
@@ -353,10 +369,9 @@ internal fun MapTopBar(
                 title = stringResource(id = R.string.btn_text_fetch_items),
                 navigateToMyItemList
             )
-            // TODO navigateToRanking
             ActionButton(
                 title = stringResource(id = R.string.btn_text_ranking),
-                navigateToMyItemList
+                navigateToRanking
             )
         }
     }

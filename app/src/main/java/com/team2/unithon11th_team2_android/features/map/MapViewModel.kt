@@ -54,6 +54,8 @@ internal class MapViewModel @Inject constructor(
             is MapUiEvent.OnClickRegister -> {
                 registerItem()
             }
+
+            else -> {}
         }
     }
 
@@ -73,6 +75,8 @@ internal class MapViewModel @Inject constructor(
                         // TODO Error
                         Log.e("gowoon", "error map viewmodel fetchItemList ${it.exception}")
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -97,6 +101,8 @@ internal class MapViewModel @Inject constructor(
 
                     is Resource.Error -> {
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -108,6 +114,10 @@ internal class MapViewModel @Inject constructor(
 
     fun loadData(){
         setEffect(MapUiEffect.Reload)
+    }
+
+    fun updateStep(step: Step){
+        setState(currentState.copy(sheetData = currentState.sheetData.copy(step = step)))
     }
 
 }

@@ -11,10 +11,12 @@ fun NavHostController.navigateToMapScreen() = navigate(MAP_ROUTE)
 
 @SuppressLint("MissingPermission")
 fun NavGraphBuilder.mapScreen(
+    navigateToRanking: () -> Unit,
     navigateToMyItemList: () -> Unit,
     navigateToRespond: (Int) -> Unit, finish: () -> Unit){
     composable(MAP_ROUTE) {
         MapScreen(
+            navigateToRanking = navigateToRanking,
             navigateToMyItemList = navigateToMyItemList,
             navigateToRespond = navigateToRespond, onBackPressed = finish)
     }
