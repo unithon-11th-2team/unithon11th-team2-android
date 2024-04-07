@@ -1,5 +1,6 @@
 package com.team2.unithon11th_team2_android.features.login
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,31 +15,26 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.theme.OurColorPalette
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTypo
-import com.team2.unithon11th_team2_android.component.AppBarWithBackNavigation
 import com.team2.unithon11th_team2_android.component.MainButton
-import com.team2.unithon11th_team2_android.component.TitleText
 import timber.log.Timber
 
 @Composable
 internal fun LoginScreen(
-    navController: NavController,
     onSuccessLogin: () -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit
 ) {
+
+    // loginViewModel.setEvent(LoginUiEvent.OnCheckLogin)
     val nickname = loginViewModel.nickname.collectAsState().value
     val state = loginViewModel.uiState.collectAsState().value
 
@@ -47,7 +43,7 @@ internal fun LoginScreen(
             if ((state.state as LoginState.SUCCESS).newUser) {
                 onSuccessLogin()
             } else {
-                navController.popBackStack()
+                // TODO error handling
             }
         }
 
@@ -57,6 +53,12 @@ internal fun LoginScreen(
 
         else -> {}
     }
+
+    BackHandler {
+        onBackPressed()
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,8 +66,9 @@ internal fun LoginScreen(
             .padding(vertical = 56.dp)
     ) {
 
-       Image(
-           painter = painterResource(R.drawable.profile_title_img), contentDescription = null)
+        Image(
+            painter = painterResource(R.drawable.profile_title_img), contentDescription = null
+        )
         Spacer(modifier = Modifier.padding(20.dp))
         BasicTextField(
             modifier = Modifier

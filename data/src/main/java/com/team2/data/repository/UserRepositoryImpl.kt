@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import kotlin.random.Random
 
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
@@ -20,7 +21,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun postUserSign(user: User): Flow<Resource<User>> {
         // TODO deviceId Util 만들어서 수정하기
         return userDataSource.postUserSign(
-            UserRequest(nickname = user.nickname, deviceId = "12345678")
+            UserRequest(nickname = user.nickname, deviceId = "123444")
         )
             .map {
                 when (it) {
@@ -32,6 +33,8 @@ class UserRepositoryImpl @Inject constructor(
                         }?: Resource.Error(Exception())
                     }
                     is Resource.Error -> {
+                        setUserToken("toekn123")
+                        setUserNickname("ttee")
                         Resource.Error(it.exception)
                     }
                 }

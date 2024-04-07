@@ -15,7 +15,9 @@ import androidx.navigation.NavController
 import com.team2.unithon11th_team2_android.common.ui.theme.OurColorPalette
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
 import com.team2.unithon11th_team2_android.features.map.MAP_ROUTE
+import com.team2.unithon11th_team2_android.features.permission.PERMISSION_ROUTE
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -40,10 +42,12 @@ internal fun OurApp(
     ) {
         when (state.route) {
             TargetRoute.PERMISSION -> {
-                navController.navigate(AppRoute.permission)
+                Timber.e("TargetRoute - PERMISSION")
+                navController.navigate(PERMISSION_ROUTE)
             }
 
             TargetRoute.HOME -> {
+                Timber.e("TargetRoute - HOME")
                 navController.navigate(MAP_ROUTE)
             }
         }

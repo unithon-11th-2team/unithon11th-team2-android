@@ -2,6 +2,7 @@ package com.team2.unithon11th_team2_android.features.login
 
 import androidx.lifecycle.viewModelScope
 import com.team2.domain.common.Resource
+import com.team2.domain.usecase.AutoLoginUseCase
 import com.team2.domain.usecase.LoginUseCase
 import com.team2.unithon11th_team2_android.common.base.BaseViewModel
 import com.team2.unithon11th_team2_android.common.base.UiEffect
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val autoLoginUseCase: AutoLoginUseCase
 ) : BaseViewModel<LoginUiState, LoginUiEvent, UiEffect>() {
 
     private val _nickname = MutableStateFlow("")
@@ -35,7 +37,32 @@ internal class LoginViewModel @Inject constructor(
                 signUp()
             }
 
+            is LoginUiEvent.OnCheckLogin -> {
+                login()
+            }
+
             else -> {}
+        }
+    }
+
+    private fun login() {
+        viewModelScope.launch {
+            autoLoginUseCase.invoke().collect {
+                when (it) {
+                    is Resource.Success -> {
+                        Timber.e("#### SUCCESS ${it.data}")
+                        setState(currentState.copy(LoginState.SUCCESS(false), nickname = _nickname.value))
+                    }
+
+                    is Resource.Error -> {
+                        Timber.e("ERROR ${it}")
+                        // TODO Failed로 변경
+                        setState(currentState.copy(LoginState.SUCCESS(false), nickname = _nickname.value))
+                    }
+
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -78,6 +105,7 @@ sealed class LoginState {
 }
 
 sealed class LoginUiEvent : UiEvent {
+    object OnCheckLogin: LoginUiEvent()
     object OnClickLoginButton : LoginUiEvent()
     data class OnFetchNickname(val nickname: String) : LoginUiEvent()
 }

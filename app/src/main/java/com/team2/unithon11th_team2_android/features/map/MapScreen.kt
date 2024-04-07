@@ -1,7 +1,6 @@
 package com.team2.unithon11th_team2_android.features.map
 
 import android.Manifest
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.background
@@ -51,9 +50,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -66,7 +62,6 @@ import com.team2.unithon11th_team2_android.R
 import com.team2.unithon11th_team2_android.common.ui.bitmapDescriptorFromVector
 import com.team2.unithon11th_team2_android.common.ui.component.DefaultButton
 import com.team2.unithon11th_team2_android.common.ui.theme.OurTheme
-import com.team2.unithon11th_team2_android.features.myitem.MY_ITEM_LIST
 
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
@@ -87,12 +82,17 @@ internal fun MapScreen(
     var currentPinResId by remember { mutableStateOf(-1) }
 
     LaunchedEffect(true) {
-        mapViewModel.uiEffect.collect{
-            when(it){
+        mapViewModel.uiEffect.collect {
+            when (it) {
                 is MapUiEffect.Reload -> {
                     locationClient.lastLocation.addOnCompleteListener {
                         it.result.apply {
-                            mapViewModel.setEvent(MapUiEvent.InitCurrentLocation(latitude, longitude))
+                            mapViewModel.setEvent(
+                                MapUiEvent.InitCurrentLocation(
+                                    latitude,
+                                    longitude
+                                )
+                            )
                             mapViewModel.setEvent(MapUiEvent.FetchItemList)
                             cameraPositionState.position =
                                 CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
@@ -134,21 +134,25 @@ internal fun MapScreen(
             cameraPositionState = cameraPositionState
         ) {
             state.items.forEach {
-                val resId = when(it.type){
-                    ItemType.TYPE1 -> if(it.isMine) R.drawable.pin_mine_type1 else R.drawable.pin_other_type1
-                    ItemType.TYPE2 -> if(it.isMine) R.drawable.pin_mine_type2 else R.drawable.pin_other_type2
-                    ItemType.TYPE3 -> if(it.isMine) R.drawable.pin_mine_type3 else R.drawable.pin_other_type3
-                    ItemType.TYPE4 -> if(it.isMine) R.drawable.pin_mine_type4 else R.drawable.pin_other_type4
-                    ItemType.TYPE5 -> if(it.isMine) R.drawable.pin_mine_type5 else R.drawable.pin_other_type5
+                val resId = when (it.type) {
+                    ItemType.TYPE1 -> if (it.isMine) R.drawable.pin_mine_type1 else R.drawable.pin_other_type1
+                    ItemType.TYPE2 -> if (it.isMine) R.drawable.pin_mine_type2 else R.drawable.pin_other_type2
+                    ItemType.TYPE3 -> if (it.isMine) R.drawable.pin_mine_type3 else R.drawable.pin_other_type3
+                    ItemType.TYPE4 -> if (it.isMine) R.drawable.pin_mine_type4 else R.drawable.pin_other_type4
+                    ItemType.TYPE5 -> if (it.isMine) R.drawable.pin_mine_type5 else R.drawable.pin_other_type5
                 }
-                CustomPin(location = LatLng(it.latitude, it.longitude), iconResId = resId){
+                CustomPin(location = LatLng(it.latitude, it.longitude), iconResId = resId) {
                     navigateToRespond(it.id ?: -1)
                 }
             }.also {
                 CustomPin(state.currentLocation, currentPinResId, 1.0f)
             }
         }
-        MapTopBar(modifier = Modifier.align(TopCenter), navigateToMyItemList = navigateToMyItemList, onClick = onBackPressed)
+        MapTopBar(
+            modifier = Modifier.align(TopCenter),
+            navigateToMyItemList = navigateToMyItemList,
+            onClick = onBackPressed
+        )
 
         when (state.sheetData.step) {
             Step.INIT -> {
@@ -167,7 +171,7 @@ internal fun MapScreen(
                 InputContentScreen(
                     modifier = Modifier.align(BottomCenter),
                     onTextChanged = { mapViewModel.updateContent(it) }
-                ){
+                ) {
                     mapViewModel.setEvent(MapUiEvent.OnClickRegister)
                 }
             }
@@ -266,7 +270,7 @@ internal fun SelectItemScreen(modifier: Modifier = Modifier, onClickItem: (ItemT
 @Composable
 internal fun InputContentScreen(
     modifier: Modifier = Modifier,
-    onTextChanged:(String) -> Unit,
+    onTextChanged: (String) -> Unit,
     onClickBtn: () -> Unit
 ) {
     Column(
@@ -300,7 +304,7 @@ internal fun InputContentScreen(
                     .wrapContentHeight()
                     .padding(bottom = 20.dp),
                 contentAlignment = TopStart
-            ){
+            ) {
                 if (text.isEmpty()) {
                     Text(
                         text = stringResource(id = R.string.hint_text_content),
@@ -317,7 +321,11 @@ internal fun InputContentScreen(
 }
 
 @Composable
-internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, navigateToMyItemList: () -> Unit) {
+internal fun MapTopBar(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    navigateToMyItemList: () -> Unit
+) {
     Box(
         modifier
             .fillMaxWidth()
@@ -329,7 +337,8 @@ internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, navig
             modifier = Modifier
                 .size(48.dp)
                 .align(CenterStart),
-            onClick = onClick) {
+            onClick = onClick
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.back),
                 contentDescription = null
@@ -340,15 +349,21 @@ internal fun MapTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, navig
             modifier = Modifier.align(CenterEnd),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ActionButton(title = stringResource(id = R.string.btn_text_fetch_items), navigateToMyItemList)
+            ActionButton(
+                title = stringResource(id = R.string.btn_text_fetch_items),
+                navigateToMyItemList
+            )
             // TODO navigateToRanking
-            ActionButton(title = stringResource(id = R.string.btn_text_ranking), navigateToMyItemList)
+            ActionButton(
+                title = stringResource(id = R.string.btn_text_ranking),
+                navigateToMyItemList
+            )
         }
     }
 }
 
 @Composable
-internal fun ActionButton(title: String, moveToPage: ()-> Unit) {
+internal fun ActionButton(title: String, moveToPage: () -> Unit) {
     Box(
         modifier = Modifier
             .wrapContentSize()
@@ -379,7 +394,12 @@ internal fun ActionButton(title: String, moveToPage: ()-> Unit) {
 }
 
 @Composable
-internal fun CustomPin(location: LatLng, iconResId: Int, zIndex: Float = 0.0f, onClick: () -> Unit = {}) {
+internal fun CustomPin(
+    location: LatLng,
+    iconResId: Int,
+    zIndex: Float = 0.0f,
+    onClick: () -> Unit = {}
+) {
     val context = LocalContext.current
     val icon = bitmapDescriptorFromVector(
         context, iconResId
