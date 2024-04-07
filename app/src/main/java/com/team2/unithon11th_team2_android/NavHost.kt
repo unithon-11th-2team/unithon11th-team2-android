@@ -16,6 +16,8 @@ import com.team2.unithon11th_team2_android.features.respond.respondScreen
 import com.team2.unithon11th_team2_android.features.myitem.myItemListScreen
 import com.team2.unithon11th_team2_android.features.myitem.navigateToMyItemList
 import com.team2.unithon11th_team2_android.features.permission.permissionScreen
+import com.team2.unithon11th_team2_android.features.ranking.navigateToRankingScreen
+import com.team2.unithon11th_team2_android.features.ranking.rankingScreen
 
 
 @Composable
@@ -35,11 +37,13 @@ fun OurNavHost(
             navigateToRespond = {
                     id -> navController.navigateToRespondScreen(id)
             },
-            navigateToMyItemList = navController::navigateToMyItemList
+            navigateToMyItemList = navController::navigateToMyItemList,
+            navigateToRanking = navController::navigateToRankingScreen
         ) { finish() }
         permissionScreen(navController::navigateToLogin)
         myItemListScreen(navController::navigateToMapScreen, navController::navigateToMapScreen)
         myItemDetailScreen(navController::navigateToMyItemList)
         respondScreen()
+        rankingScreen()
     }
 }
