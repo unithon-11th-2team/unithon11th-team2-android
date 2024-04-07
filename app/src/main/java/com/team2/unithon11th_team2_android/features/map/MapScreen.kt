@@ -95,13 +95,13 @@ internal fun MapScreen(
                         it.result.apply {
                             mapViewModel.setEvent(
                                 MapUiEvent.InitCurrentLocation(
-                                    latitude,
-                                    longitude
+                                    latitude - 0.003,
+                                    longitude + 0.003
                                 )
                             )
                             mapViewModel.setEvent(MapUiEvent.FetchItemList)
                             cameraPositionState.position =
-                                CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 15f)
+                                CameraPosition.fromLatLngZoom(LatLng(latitude - 0.003, longitude + 0.003), 17f)
                         }
                     }
                 }
@@ -110,7 +110,19 @@ internal fun MapScreen(
     }
 
     BackHandler {
-        onBackPressed()
+        when(state.sheetData.step){
+            Step.INIT -> {
+                onBackPressed()
+            }
+
+            Step.LEVEL -> {
+                mapViewModel.updateStep(Step.INIT)
+            }
+
+            Step.CONTENT -> {
+                mapViewModel.updateStep(Step.LEVEL)
+            }
+        }
     }
 
     LaunchedEffect(state.sheetData.step) {

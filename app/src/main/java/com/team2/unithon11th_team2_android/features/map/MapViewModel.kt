@@ -110,6 +110,10 @@ internal class MapViewModel @Inject constructor(
         setEffect(MapUiEffect.Reload)
     }
 
+    fun updateStep(step: Step){
+        setState(currentState.copy(sheetData = currentState.sheetData.copy(step = step)))
+    }
+
 }
 
 data class MapUiState(
